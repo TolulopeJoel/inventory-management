@@ -6,12 +6,12 @@ This REST API project provides an API for managing inventory items and suppliers
 
 1. Clone the repository:
    ```
-   git clone https://github.com/TolulopeJoel/invetory-management.git
+   git clone https://github.com/TolulopeJoel/inventory-management.git
    ```
 
 2. Navigate to the project directory:
    ```
-   cd invetory-management
+   cd inventory-management
    ```
 
 3. Create a virtual environment:
