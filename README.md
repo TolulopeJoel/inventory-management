@@ -156,7 +156,7 @@ This REST API project provides an API for managing inventory items and suppliers
 ```json
 {
     "name": "Updated Item A",
-    "supplier_ids": [2]
+    "supplier_ids": 2
 }
 ```
 
