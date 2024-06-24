@@ -14,24 +14,21 @@ class InventoryAPITestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.supplier = Supplier.objects.create(
-            name="Test Supplier",
-            contact_info="test@example.com"
+            name="Test Supplier", contact_info="test@example.com"
         )
         self.item = InventoryItem.objects.create(
-            name="Test Item",
-            description="Test Description",
-            price=10.00
+            name="Test Item", description="Test Description", price=10.00
         )
         self.item.suppliers.add(self.supplier)
 
     def test_get_suppliers(self):
-        url = reverse('supplier-list')
+        url = reverse("supplier-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
     def test_get_inventory_items(self):
-        url = reverse('inventoryitem-list')
+        url = reverse("inventoryitem-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
@@ -48,7 +45,7 @@ class InventoryItemSerializerTestCase(APITestCase):
             "description": "Test Description",
             "quantity": 10,
             "price": 10.00,
-            "supplier_ids": [self.supplier1.id, self.supplier2.id]
+            "supplier_ids": [self.supplier1.id, self.supplier2.id],
         }
 
     def test_create_inventory_item(self):
@@ -63,17 +60,17 @@ class InventoryItemSerializerTestCase(APITestCase):
 
     def test_update_inventory_item(self):
         item = InventoryItem.objects.create(
-            name="Original Item", quantity=5, price=5.00)
+            name="Original Item", quantity=5, price=5.00
+        )
         item.suppliers.add(self.supplier1)
 
         update_data = {
             "name": "Updated Item",
             "quantity": 15,
             "price": 15.00,
-            "supplier_ids": [self.supplier2.id]
+            "supplier_ids": [self.supplier2.id],
         }
-        serializer = InventoryItemSerializer(
-            item, data=update_data, partial=True)
+        serializer = InventoryItemSerializer(item, data=update_data, partial=True)
         self.assertTrue(serializer.is_valid())
         updated_item = serializer.save()
 
@@ -85,7 +82,7 @@ class InventoryItemSerializerTestCase(APITestCase):
 
     def test_single_supplier_id(self):
         data = self.item_data.copy()
-        data['supplier_ids'] = self.supplier1.id
+        data["supplier_ids"] = self.supplier1.id
         serializer = InventoryItemSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         item = serializer.save()
@@ -93,16 +90,12 @@ class InventoryItemSerializerTestCase(APITestCase):
         self.assertIn(self.supplier1, item.suppliers.all())
 
     def test_serialization(self):
-        item = InventoryItem.objects.create(
-            name="Test Item",
-            quantity=10,
-            price=10.00
-        )
+        item = InventoryItem.objects.create(name="Test Item", quantity=10, price=10.00)
         item.suppliers.add(self.supplier1, self.supplier2)
         serializer = InventoryItemSerializer(item)
         data = serializer.data
-        self.assertEqual(data['name'], "Test Item")
-        self.assertEqual(data['quantity'], 10)
-        self.assertEqual(len(data['suppliers']), 2)
-        self.assertIn('id', data['suppliers'][0])
-        self.assertIn('name', data['suppliers'][0])
+        self.assertEqual(data["name"], "Test Item")
+        self.assertEqual(data["quantity"], 10)
+        self.assertEqual(len(data["suppliers"]), 2)
+        self.assertIn("id", data["suppliers"][0])
+        self.assertIn("name", data["suppliers"][0])

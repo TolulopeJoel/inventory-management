@@ -37,11 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    #local apps
+    # local apps
     "inventory.apps.InventoryConfig",
-
-    #third party apps
+    # third party apps
     "rest_framework",
 ]
 

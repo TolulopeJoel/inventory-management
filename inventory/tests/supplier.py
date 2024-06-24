@@ -12,27 +12,24 @@ class SupplierAPITestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.supplier = Supplier.objects.create(
-            name="Test Supplier",
-            contact_info="test@example.com"
+            name="Test Supplier", contact_info="test@example.com"
         )
         self.item = InventoryItem.objects.create(
-            name="Test Item",
-            description="Test Description",
-            price=10.00
+            name="Test Item", description="Test Description", price=10.00
         )
         self.item.suppliers.add(self.supplier)
 
     def test_get_suppliers(self):
-        url = reverse('supplier-list')
+        url = reverse("supplier-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
 
     def test_get_supplier_detail(self):
-        url = reverse('supplier-detail', kwargs={'pk': self.supplier.pk})
+        url = reverse("supplier-detail", kwargs={"pk": self.supplier.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data['name'], "Test Supplier")
+        self.assertEqual(response.data["name"], "Test Supplier")
 
 
 class SupplierSerializerTestCase(APITestCase):
@@ -62,33 +59,33 @@ class SupplierSerializerTestCase(APITestCase):
 
     def test_update_supplier(self):
         supplier = Supplier.objects.create(
-            name="Original Supplier", contact_info="original@example.com")
+            name="Original Supplier", contact_info="original@example.com"
+        )
         supplier.items.add(self.item1)
 
         update_data = {
             "name": "Updated Supplier",
             "contact_info": "updated@example.com",
         }
-        serializer = SupplierSerializer(
-            supplier, data=update_data, partial=True)
+        serializer = SupplierSerializer(supplier, data=update_data, partial=True)
         self.assertTrue(serializer.is_valid())
         updated_supplier = serializer.save()
 
         self.assertEqual(updated_supplier.name, "Updated Supplier")
         self.assertEqual(updated_supplier.contact_info, "updated@example.com")
         self.assertEqual(updated_supplier.items.count(), 1)
+
     #     self.assertIn(self.item2, updated_supplier.items.all())
 
     def test_serialization(self):
         supplier = Supplier.objects.create(
-            name="Test Supplier",
-            contact_info="test@example.com"
+            name="Test Supplier", contact_info="test@example.com"
         )
         supplier.items.add(self.item1, self.item2)
         serializer = SupplierSerializer(supplier)
         data = serializer.data
-        self.assertEqual(data['name'], "Test Supplier")
-        self.assertEqual(data['contact_info'], "test@example.com")
-        self.assertEqual(len(data['items']), 2)
-        self.assertIn('id', data['items'][0])
-        self.assertIn('name', data['items'][0])
+        self.assertEqual(data["name"], "Test Supplier")
+        self.assertEqual(data["contact_info"], "test@example.com")
+        self.assertEqual(len(data["items"]), 2)
+        self.assertIn("id", data["items"][0])
+        self.assertIn("name", data["items"][0])
