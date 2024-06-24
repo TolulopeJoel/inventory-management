@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # local apps
     "inventory.apps.InventoryConfig",
+    "accounts.apps.AccountsConfig",
     # third party apps
     "rest_framework",
 ]
