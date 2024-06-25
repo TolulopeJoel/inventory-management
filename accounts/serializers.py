@@ -7,12 +7,11 @@ from .models import Employee
 
 class EmployeeSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    username = serializers.CharField(read_only=True, source='user.username')
 
     class Meta:
         model = Employee
-        fields = ['employee_id', 'email', 'username']
-        read_only_fields = ['employee_id', 'username']
+        fields = ['id', 'email', 'first_name', 'last_name']
+        read_only_fields = ['first_name', 'last_name']
 
     def create(self, validated_data):
         email = validated_data.pop('email')
@@ -40,12 +39,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = (
-            'username',
+            'email',
             'password',
             'password2',
-            'email',
             'first_name',
-            'last_name'
+            'last_name',
         )
         extra_kwargs = {
             'first_name': {'required': True},
@@ -55,13 +53,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError(
-                {"password": "Password fields didn't match."}
+                {"password": "Passwords do not match."}
             )
         return attrs
 
     def create(self, validated_data):
         user = get_user_model().objects.create(
-            username=validated_data['username'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
