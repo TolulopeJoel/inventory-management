@@ -4,6 +4,6 @@ from inventory.views import InventoryItemViewSet, SupplierViewSet
 
 router = DefaultRouter()
 router.register("suppliers", SupplierViewSet)
-router.register("inventory-items", InventoryItemViewSet)
+router.register("inventory", InventoryItemViewSet)
 
 urlpatterns = router.urls

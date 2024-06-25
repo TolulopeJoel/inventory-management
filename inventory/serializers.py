@@ -9,6 +9,12 @@ class PublicInventoryItemSerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
 
 
+class PublicSupplierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Supplier
+        fields = ["id", "name", "contact_info"]
+
+
 class SupplierSerializer(serializers.ModelSerializer):
     items = PublicInventoryItemSerializer(many=True, read_only=True)
 
@@ -20,7 +26,7 @@ class SupplierSerializer(serializers.ModelSerializer):
 class InventoryItemSerializer(serializers.ModelSerializer):
     """Serializer for InventoryItem model with supplier handling."""
 
-    suppliers = SupplierSerializer(many=True, read_only=True)
+    suppliers = PublicSupplierSerializer(many=True, read_only=True)
     supplier_ids = serializers.ListField(
         child=serializers.IntegerField(),
         write_only=True,
