@@ -6,26 +6,39 @@ from .models import Employee
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField()
+    employee_email = serializers.EmailField(write_only=True)
+    first_name = serializers.SerializerMethodField()
+    last_name = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
 
     class Meta:
         model = Employee
-        fields = ['id', 'email', 'first_name', 'last_name']
+        fields = ['id', 'employee_email', 'first_name', 'last_name', 'email',]
         read_only_fields = ['first_name', 'last_name']
 
+    def get_email(self, obj):
+        return obj.user.email
+
+    def get_first_name(self, obj):
+        return obj.user.first_name
+
+    def get_last_name(self, obj):
+        return obj.user.last_name
+
     def create(self, validated_data):
-        email = validated_data.pop('email')
+        email = validated_data.pop('employee_email')
         user = get_user_model().objects.filter(email=email).first()
         if not user:
             raise serializers.ValidationError(
-                {"email": "Employee with this email does not exist."}
+                {"email": "User with this email does not exist."}
             )
-        return Employee.objects.create(user=user, **validated_data)
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['email'] = instance.user.email
-        return representation
+        if hasattr(user, 'employee'):
+            raise serializers.ValidationError(
+                {"email": f"{user.first_name} {user.last_name} is already an employee."}
+            )
+
+        return Employee.objects.create(user=user, **validated_data)
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
