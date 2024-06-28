@@ -57,11 +57,11 @@ This REST API project provides an API for managing inventory items and suppliers
 
 ### Inventory Items
 
-- `GET /api/inventory-items/`: List all inventory items
-- `POST /api/inventory-items/`: Create a new inventory item
-- `GET /api/inventory-items/{id}/`: Retrieve a specific inventory item
-- `PUT /api/inventory-items/{id}/`: Update an inventory item
-- `DELETE /api/inventory-items/{id}/`: Delete an inventory item
+- `GET /api/inventory/`: List all inventory items
+- `POST /api/inventory/`: Create a new inventory item
+- `GET /api/inventory/{id}/`: Retrieve a specific inventory item
+- `PUT /api/inventory/{id}/`: Update an inventory item
+- `DELETE /api/inventory/{id}/`: Delete an inventory item
 
 ## Example Responses
 
@@ -91,7 +91,7 @@ This REST API project provides an API for managing inventory items and suppliers
 ]
 ```
 
-### `GET /api/inventory-items/`
+### `GET /api/inventory/`
 
 ```json
 [
@@ -122,7 +122,7 @@ This REST API project provides an API for managing inventory items and suppliers
 ]
 ```
 
-### `POST /api/inventory-items/`
+### `POST /api/inventory/`
 
 **Request:**
 ```json
@@ -150,7 +150,7 @@ This REST API project provides an API for managing inventory items and suppliers
 }
 ```
 
-### `PUT /api/inventory-items/1/`
+### `PUT /api/inventory/1/`
 
 **Request:**
 ```json
