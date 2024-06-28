@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient, APITestCase
 
-from inventory.models import Supplier, InventoryItem
+from inventory.models import InventoryItem, Supplier
 from inventory.serializers import SupplierSerializer
 
 
@@ -11,6 +12,10 @@ class SupplierAPITestCase(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.user = get_user_model().objects.create_user(
+            email="dave@test.com", is_staff=True
+        )
+        self.client.force_authenticate(user=self.user)
         self.supplier = Supplier.objects.create(
             name="Test Supplier", contact_info="test@example.com"
         )
