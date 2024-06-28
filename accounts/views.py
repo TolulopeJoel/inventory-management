@@ -12,8 +12,6 @@ class EmployeeViewSet(ModelViewSet):
     queryset = Employee.objects.all()
 
 
-
 class UserRegistrationAPIView(CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = UserRegistrationSerializer
-
